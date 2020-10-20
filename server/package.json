@@ -1,0 +1,43 @@
+{
+  "name": "Boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "8.12.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.3",
+    "connect-mongo": "^3.2.0",
+    "cors": "^2.8.4",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-session": "^1.17.1",
+    "helmet": "^4.1.1",
+    "joi": "^17.2.1",
+    "joi-objectid": "^3.0.1",
+    "moment": "^2.29.0",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^5.10.6",
+    "nodemailer": "^6.4.14",
+    "nodemailer-mailgun-transport": "^2.0.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "ramda": "^0.27.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

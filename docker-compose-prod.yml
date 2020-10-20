@@ -1,0 +1,36 @@
+version: "3"
+services:
+  mongo-prod:
+    image: mongo:latest
+    ports:
+      - "20717:20717" 
+    volumes:
+      - /data/db # Create a volume for the DB.
+  client-prod:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://localhost:5555
+    restart: always
+  server-prod:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - mongo-prod
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo-prod:27017/PROD
+      - PORT=5555
+      - HOST=localhost:3002
+      - MAILGUN_API_KEY=9a734a879a5b0afbdadde187b7b4c012-8b34de1b-fdb35f27
+      - SENDING_EMAIL=info.parkoq.nu
+      - SESSION_KEY=57/GB537kQTk1HUE3Nlg0Vl74O1nusTl
+    ports:
+      - "5555:5555"
+    restart: always
