@@ -19,8 +19,10 @@ import {
   FormItem,
 } from "formik-antd";
 import { message, Button, Row, Col, Card } from "antd";
+import { FormattedMessage, FormattedDate, useIntl } from 'react-intl';
+
 function validateRequired(value) {
-  return value ? undefined : "required";
+  return value ? undefined : "Required";
 }
 export default function Register() {
   const { isAuth } = useSelector((state) => state.user);
@@ -44,14 +46,29 @@ export default function Register() {
     },
   };
   const initialValues = {
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirm_password: "",
+
   };
 
   const validationSchema = Yup.object({
     email: Yup.string().min(5).max(255).email().required("Required"),
-    username: Yup.string().min(3).max(50).required("Required"),
-    password: Yup.string().min(5).max(255).required("Required"),
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    password: Yup
+      .string()
+      .min(8)
+      .required(),
+    confirm_password: Yup
+      .string()
+      .required()
+      .oneOf(
+        [Yup.ref('password'), null],
+        'Passwords must match',
+      ),
   });
 
   const onSubmit = (values) => {
@@ -91,20 +108,23 @@ export default function Register() {
         return (
           <Formik
             initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              message.info(JSON.stringify(values, null, 4));
-              actions.setSubmitting(false);
-              actions.resetForm();
-            }}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
             validate={(values) => {
+              if (!values.firstName) {
+                return { firstName: "Required" };
+              }
+              if (!values.lastName) {
+                return { lastName: "Required" };
+              }
               if (!values.email) {
                 return { email: "Required" };
               }
-              if (!values.username) {
-                return { username: "Required" };
-              }
               if (!values.password) {
                 return { password: "Required" };
+              }
+              if (!values.confirm_password) {
+                return { confirm_password: "Required" };
               }
               return {};
             }}
@@ -122,13 +142,24 @@ export default function Register() {
                 >
                   <Form
                     {...layout}
-                    // style={{
-                    //   display: "flex",
-                    //   gridTemplateColumns: "1fr 1fr 1fr",
-                    // }}
-                    // labelCol={{ xs: 10 }}
-                    // // wrapperCol={{ xs: 20 }}
                   >
+                    <FormItem
+
+                      name="firstName"
+                      label={<FormattedMessage id="firstName" />}
+                      required={true}
+                      validate={validateRequired}
+                    >
+                      <Input name="firstName" placeholder="Firstname" />
+                    </FormItem>
+                    <FormItem
+                      name="lastName"
+                      label={<FormattedMessage id="lastName" />}
+                      required={true}
+                      validate={validateRequired}
+                    >
+                      <Input name="lastName" placeholder="Lastname" />
+                    </FormItem>
                     <FormItem
                       name="email"
                       label="Email"
@@ -144,6 +175,15 @@ export default function Register() {
                       validate={validateRequired}
                     >
                       <Input.Password name="password" placeholder="Password" />
+                    </FormItem>
+
+                    <FormItem
+                      name="confirm_password"
+                      label="Repeat Password"
+                      required={true}
+                      validate={validateRequired}
+                    >
+                      <Input.Password name="confirm_password" placeholder="Repeat Password" />
                     </FormItem>
 
                     <Row style={{ marginTop: 60 }}>
@@ -199,6 +239,6 @@ export default function Register() {
   return isAuth ? (
     <Redirect to="/home" />
   ) : (
-    <Fragment>{renderSwitch()}</Fragment>
-  );
+      <Fragment>{renderSwitch()}</Fragment>
+    );
 }

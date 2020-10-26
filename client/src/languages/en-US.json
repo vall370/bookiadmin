@@ -1,0 +1,10 @@
+{
+    "form.title.login": "Log in",
+    "form.title.register": "Register",
+    "content": "something",
+    "form.firstName": "First name",
+    "form.lastName": "Last name",
+    "form.email": "Email",
+    "form.password": "Password",
+    "form.repeatpassword": "Repeat Password"
+}

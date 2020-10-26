@@ -1,5 +1,25 @@
 version: "3"
 services:
+  db:
+    image: mysql:latest
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+
+    ports:
+      - 3306:3306
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+        reservations:
+          memory: 300M
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: booki
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
   client:
     build:
       context: ./client

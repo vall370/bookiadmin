@@ -10,6 +10,7 @@ import {
   resetRegister,
   sendResetPasswordLink,
   resetPassword,
+  postCustomerRegister
 } from "../../api/index";
 
 export const attemptLogin = (user) => async (dispatch) => {
@@ -45,7 +46,9 @@ export const attemptLogout = () => async (dispatch) =>
 export const attemptRegister = (newUser) => async (dispatch) => {
   await postRegister(newUser).catch(dispatch(push("/register")));
 };
-
+export const attemptRegisterCustomer = (newCustomerUser) => async (dispatch) => {
+  await postCustomerRegister(newCustomerUser).catch(dispatch(push("/register")));
+};
 export const attemptGetConfirmation = (token) => async (dispatch) =>
   await getConfirmation(token).then(() => {
     dispatch(push("/login"));

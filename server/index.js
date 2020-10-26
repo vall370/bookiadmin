@@ -1,10 +1,12 @@
 const winston = require("winston");
 const passport = require("passport");
 const mongoose = require("mongoose");
+
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const bodyParser = require("body-parser");
 const express = require("express");
+const MySQLStore = require('express-mysql-session')(session);
 
 const port = process.env.PORT || 3900;
 const app = express();
@@ -15,6 +17,13 @@ require("./startup/validation")();
 require("./startup/cors")(app);
 require("./startup/db")();
 require("./startup/prod")(app);
+var options = {
+  host: 'db',
+  user: 'root',
+  password: 'password',
+  database: 'booki'
+};
+var sessionStore = new MySQLStore(options);
 
 // Create session
 app.use(
@@ -24,7 +33,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     // Store session on DB
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: sessionStore,
   })
 );
 

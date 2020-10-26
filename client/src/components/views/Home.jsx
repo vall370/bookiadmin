@@ -1,4 +1,6 @@
 import React from "react";
+import { Context } from '../Wrapper'
+import { useContext } from 'react';
 
 import "antd/dist/antd.css";
 import "../../index.css";
@@ -8,10 +10,13 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
+import { FormattedMessage, FormattedDate } from 'react-intl';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function Home() {
+  const context = useContext(Context)
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Sider
@@ -44,7 +49,9 @@ export default function Home() {
         /> */}
         <Content style={{ margin: "24px 16px 0", height: "100vh" }}>
           <div className="site-layout-background" style={{ padding: 24 }}>
-            content
+            <FormattedMessage id="content" defaultMessage="content" />
+
+
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
