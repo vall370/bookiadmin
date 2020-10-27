@@ -159,21 +159,29 @@ router.post("/createCustomerUser", (req, res, next) => {
         [company],
         function (error, results, fields) {
             if (error) throw error;
-            let nbrOfRows = results.length
+            let nbrOfRows = results.length;
             console.log(nbrOfRows);
             if (nbrOfRows === 0) {
                 connection.query(
                     "INSERT INTO customeruser ( company, firstName, lastName, email, password, createdAt, updatedAt ) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    [company, firstName, lastName, email, hashedpassword, createdAt, updatedAt],
+                    [
+                        company,
+                        firstName,
+                        lastName,
+                        email,
+                        hashedpassword,
+                        createdAt,
+                        updatedAt,
+                    ],
                     function (error, results, fields) {
                         if (error) throw error;
-                        let token = crypto.randomBytes(16).toString("hex")
+                        let token = crypto.randomBytes(16).toString("hex");
                         connection.query(
                             "INSERT INTO tokens ( email, token, createdAt ) VALUES (?, ?, ?)",
                             [email, token, createdAt],
                             function (error, results, fields) {
                                 if (error) throw error;
-                                console.log(results[0])
+                                console.log(results);
                             }
                         );
                         const message = {
@@ -198,14 +206,77 @@ router.post("/createCustomerUser", (req, res, next) => {
                             });
                     }
                 );
-
             } else {
-                res.status(400).send({ error: true, message: "user already exists" })
+                return res.status(400).json({ message: "User already exists" });
             }
         }
-    )
-
-
+    );
 });
+router.get("/confirmation/:token", (req, res) => {
+    // Find a matching token
+    let token = req.params.token;
+    connection.query(
+        "SELECT token, email FROM tokens WHERE token = ?",
+        [token],
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send("An unexpected error occurred");
+            }
+            if (results.length === 0) {
+                return res.status(404).send({
+                    message:
+                        "We were unable to find a valid token. Your token may have expired.",
+                });
+            }
+            // If we found a token, find a matching user
 
+            let email = results[0].email
+            connection.query(
+                "SELECT email, isVerified FROM customeruser WHERE email = ?",
+                [email],
+                function (error, results, fields) {
+                    if (error) {
+                        return res.status(500).send("An unexpected error occurred");
+                    }
+                    if (results.length === 0) {
+                        return res
+                            .status(404)
+                            .send({ message: `We were unable to find a user for this token.` });
+                    }
+                    console.log(results[0].isVerified)
+                    if (results[0].isVerified === 1) {
+                        return res.status(400).send({
+                            message: "This user has already been verified. Please log in.",
+                        })
+                    }
+                    if (results[0].isVerified === 0) {
+                        connection.query("UPDATE customeruser SET isVerified = '1' WHERE email = ?",
+                            [email], function (error, results, fields) {
+                                if (error) throw error;
+                                return res.status(200).send({ message: "The account has been verified. Please log in." });
+                            }
+                        );
+                    }
+
+                })
+
+        });
+
+
+    //         // Verify and save the user
+    //         user.isVerified = true;
+    //         user.expires = null;
+    //         user.save(function (err) {
+    //             if (err) {
+    //                 return res
+    //                     .status(500)
+    //                     .send({ message: "An unexpected error occurred" });
+    //             }
+    //             return res
+    //                 .status(200)
+    //                 .send({ message: "The account has been verified. Please log in." });
+    //         });
+    //     });
+    // });
+});
 module.exports = router;
