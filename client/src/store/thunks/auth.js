@@ -6,11 +6,13 @@ import {
   postLogin,
   postLogout,
   getConfirmation,
+  getCustomerConfirmation,
   resendConfirmation,
   resetRegister,
   sendResetPasswordLink,
   resetPassword,
-  postCustomerRegister
+  postCustomerRegister,
+  postCustomerLogin
 } from "../../api/index";
 
 export const attemptLogin = (user) => async (dispatch) => {
@@ -22,7 +24,15 @@ export const attemptLogin = (user) => async (dispatch) => {
     })
     .catch(dispatch(push("/login")));
 };
-
+export const attemptCustomerLogin = (user) => async (dispatch) => {
+  await postCustomerLogin(user)
+    .then((res) => {
+      dispatch(login(res.data.user));
+      dispatch(push("/home"));
+      return res.data;
+    })
+    .catch(dispatch(push("/login")));
+};
 export const attemptSendResetPasswordLink = (email) => async (dispatch) => {
   await sendResetPasswordLink(email).catch(dispatch(push("/login/forgot")));
 };
@@ -51,6 +61,10 @@ export const attemptRegisterCustomer = (newCustomerUser) => async (dispatch) => 
 };
 export const attemptGetConfirmation = (token) => async (dispatch) =>
   await getConfirmation(token).then(() => {
+    dispatch(push("/login"));
+  });
+export const attemptGetCustomerConfirmation = (token) => async (dispatch) =>
+  await getCustomerConfirmation(token).then(() => {
     dispatch(push("/login"));
   });
 

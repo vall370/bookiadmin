@@ -59,8 +59,8 @@ export default function NavBar() {
           </NavLink>
         </div>
       ) : (
-        <div>
-          {/* <NavLink className="inactive" activeClassName="active" to="/login">
+          <div>
+            {/* <NavLink className="inactive" activeClassName="active" to="/login">
             Login
           </NavLink>
           <NavLink
@@ -70,8 +70,8 @@ export default function NavBar() {
           >
             Register
           </NavLink> */}
-        </div>
-      )}
+          </div>
+        )}
     </nav>
   );
 }

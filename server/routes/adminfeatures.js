@@ -28,6 +28,29 @@ moment().format();
 //  Input : username/password via body
 //  HTTP Success : 200, message and user infos.
 //  HTTP Errors : 400, 401.
+router.post("/login", (req, res, next) => {
+    const { email, password } = req.body;
+    if (!email) {
+        return res
+            .status(400)
+            .send({ error: true, message: "please provide email" });
+    }
+
+    connection.query(
+        "SELECT * FROM customeruser WHERE email = ?",
+        [email],
+        function (error, results, fields) {
+            if (error) throw error;
+            let comparePassword = bcrypt.compareSync(password, results[0].password);
+            if (comparePassword === true) {
+                req.session.userId = results[0].id;
+                req.session.user = results[0];
+                console.log(req.session.user)
+                res.status(200).send({ message: "Login success", user: results[0] });
+            }
+        })
+});
+
 router.post("/createUser", (req, res, next) => {
     const { building, apartment, password, company } = req.body;
     if (!apartment) {
@@ -261,22 +284,39 @@ router.get("/confirmation/:token", (req, res) => {
                 })
 
         });
-
-
-    //         // Verify and save the user
-    //         user.isVerified = true;
-    //         user.expires = null;
-    //         user.save(function (err) {
-    //             if (err) {
-    //                 return res
-    //                     .status(500)
-    //                     .send({ message: "An unexpected error occurred" });
-    //             }
-    //             return res
-    //                 .status(200)
-    //                 .send({ message: "The account has been verified. Please log in." });
-    //         });
-    //     });
-    // });
 });
+router.post("/register/reset", (req, res) => {
+    let email = req.body.email;
+    connection.query(
+        "SELECT email, isVerified FROM customeruser WHERE email = ?",
+        [email],
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send("An unexpected error occurred");
+            }
+            if (results.length === 0) {
+                return res.status(404).send("User not found");
+            }
+            if (results[0].isVerified === 0) {
+                connection.query(
+                    "DELETE FROM customeruser WHERE email = ?",
+                    [email], function (error, results, fields) {
+                        if (error) {
+                            return res.status(500).send("An unexpected error occurred");
+                        }
+                        return res.status(200).send({
+                            message: "User reset is successful.",
+                        })
+                    })
+
+            }
+            if (results[0].isVerified === 1) {
+                return res.status(400).send({
+                    message: "This user is not verified. Please look for verifiation email.",
+                })
+            }
+
+        })
+})
+
 module.exports = router;

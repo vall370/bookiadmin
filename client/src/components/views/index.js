@@ -7,6 +7,7 @@ import LoginForgot from "./LoginForgot.jsx";
 import LoginResetPassword from "./LoginResetPassword.jsx";
 import Logout from "./Logout.jsx";
 import Register from "./Register.jsx";
+import NavBar1 from "./NavBar1.jsx";
 
 export {
   ConfirmPage,
@@ -18,4 +19,5 @@ export {
   LoginResetPassword,
   Logout,
   Register,
+  NavBar1,
 };

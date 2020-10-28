@@ -8,6 +8,7 @@ import {
   attemptRegister,
   attemptResendConfirmation,
   attemptResetRegister,
+  attemptRegisterCustomer
 } from "../../store/thunks/auth";
 import { Formik } from "formik";
 import {
@@ -51,13 +52,14 @@ export default function Register() {
     email: "",
     password: "",
     confirm_password: "",
-
+    company: "",
   };
 
   const validationSchema = Yup.object({
     email: Yup.string().min(5).max(255).email().required("Required"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
+    company: Yup.string().required("Required"),
     password: Yup
       .string()
       .min(8)
@@ -72,7 +74,7 @@ export default function Register() {
   });
 
   const onSubmit = (values) => {
-    dispatch(attemptRegister(values))
+    dispatch(attemptRegisterCustomer(values))
       .then(() => {
         setEmail(values.email);
         setRegisterStep("resend");
@@ -120,6 +122,9 @@ export default function Register() {
               if (!values.email) {
                 return { email: "Required" };
               }
+              if (!values.company) {
+                return { company: "Required" };
+              }
               if (!values.password) {
                 return { password: "Required" };
               }
@@ -138,11 +143,20 @@ export default function Register() {
                 <Card
                   title="Registration"
                   bordered={false}
-                  style={{ width: "auto" }}
+                  style={{ width: "50vh" }}
                 >
                   <Form
                     {...layout}
                   >
+                    <FormItem
+
+                      name="company"
+                      label={<FormattedMessage id="company" />}
+                      required={true}
+                      validate={validateRequired}
+                    >
+                      <Input name="company" placeholder="Company" />
+                    </FormItem>
                     <FormItem
 
                       name="firstName"
@@ -204,7 +218,7 @@ export default function Register() {
         return (
           <div className="container">
             <p>A verification email has been sent.</p>
-            <p>Check you mailbox : {email}.</p>
+            <p>Check you'r mailbox : {email}.</p>
             <p>
               You have 12 hours to activate your account. It can take up to 15
               min to receive our email.

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect, useParams } from "react-router-dom";
-import { attemptGetConfirmation } from "../../store/thunks/auth";
+import { attemptGetConfirmation, attemptGetCustomerConfirmation } from "../../store/thunks/auth";
 import { Error } from "./../shared";
 
 export default function ConfirmPage() {
@@ -11,7 +11,7 @@ export default function ConfirmPage() {
   const { token } = useParams();
 
   function doSubmit() {
-    dispatch(attemptGetConfirmation(token)).catch((error) => {
+    dispatch(attemptGetCustomerConfirmation(token)).catch((error) => {
       if (error.response) {
         setServerError(error.response.data.message);
       }
@@ -21,10 +21,10 @@ export default function ConfirmPage() {
   return isAuth ? (
     <Redirect to='/home' />
   ) : (
-    <div className='container'>
-      <p>Click here to confirm your email</p>
-      <button onClick={doSubmit}>Confirmation</button>
-      {serverError && <Error>{serverError}</Error>}
-    </div>
-  );
+      <div className='container'>
+        <p>Click here to confirm your email</p>
+        <button onClick={doSubmit}>Confirmation</button>
+        {serverError && <Error>{serverError}</Error>}
+      </div>
+    );
 }
