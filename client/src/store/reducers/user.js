@@ -1,4 +1,6 @@
-import { LOGIN_USER, LOGOUT_USER, SET_USER, RESET_USER } from "../actions/user";
+import {
+  LOGIN_USER, LOGOUT_USER, SET_USER, RESET_USER,
+} from '../actions/user';
 
 const initialState = {
   isAuth: false,

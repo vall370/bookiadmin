@@ -1,23 +1,22 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Menu } from "antd";
+import React from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Menu } from 'antd';
 import {
   MailOutlined,
   AppstoreOutlined,
   SettingOutlined,
-} from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+} from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
 export default function NavBar() {
   const { isAuth, user } = useSelector((state) => state.user);
-  const [current, setCurrent] = React.useState("home");
+  const [current, setCurrent] = React.useState('home');
   const location = useLocation();
 
   const handleClick = (e) => {
-    console.log("click", e);
+    console.log('click', e);
     setCurrent(e);
   };
   return (
@@ -59,8 +58,8 @@ export default function NavBar() {
           </NavLink>
         </div>
       ) : (
-          <div>
-            {/* <NavLink className="inactive" activeClassName="active" to="/login">
+        <div>
+          {/* <NavLink className="inactive" activeClassName="active" to="/login">
             Login
           </NavLink>
           <NavLink
@@ -70,8 +69,8 @@ export default function NavBar() {
           >
             Register
           </NavLink> */}
-          </div>
-        )}
+        </div>
+      )}
     </nav>
   );
 }

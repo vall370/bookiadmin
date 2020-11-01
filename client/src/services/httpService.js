@@ -1,15 +1,13 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL + '/api';
+axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api`;
 axios.defaults.withCredentials = true;
 
-axios.interceptors.response.use(null, error => {
-  return Promise.reject(error);
-});
+axios.interceptors.response.use(null, (error) => Promise.reject(error));
 
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
-  delete: axios.delete
+  delete: axios.delete,
 };

@@ -128,13 +128,35 @@ router.post("/getUser", (req, res) => {
         }
     );
 });
-router.get("/getApartmentCompany/:company", (req, res) => {
+router.get("/getAllUsersFromCompany", (req, res) => {
     connection.query(
-        "SELECT * FROM apartmentmaster WHERE company = ?",
+        "SELECT id, apartment, building, created_date FROM apartmentmaster WHERE company = ?",
         [req.params.company],
         function (error, results, fields) {
             if (error) throw error;
             res.json(results);
+        }
+    );
+});
+router.get("/getApartmentCompany/:company", (req, res) => {
+    connection.query(
+        "SELECT id, apartment, building, created_date FROM apartmentmaster WHERE company = ?",
+        [req.params.company],
+        function (error, results, fields) {
+            if (error) throw error;
+            let test = results
+            let testarray = []
+            const result = test.map(x => {
+                console.log(x)
+                return {
+                    id: x.id,
+                    apartment: x.apartment,
+                    building: x.building,
+                    created_date: x.created_date
+                };
+            });
+            console.log(result)
+            res.status(200).send({ 'result': result });
         }
     );
 });

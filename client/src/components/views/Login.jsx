@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import * as Yup from "yup";
-import { attemptCustomerLogin, attemptLogin } from "./../../store/thunks/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { Error } from "./../shared";
-import { Formik } from "formik";
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
 import {
   SubmitButton,
   Input,
@@ -12,17 +10,21 @@ import {
   FormikDebug,
   Form,
   FormItem,
-} from "formik-antd";
-import { message, Button, Row, Col, Card } from "antd";
+} from 'formik-antd';
+import {
+  message, Button, Row, Col, Card,
+} from 'antd';
+import { Error } from '../shared';
+import { attemptCustomerLogin, attemptLogin } from '../../store/thunks/auth';
 
 function validateRequired(value) {
-  return value ? undefined : "required";
+  return value ? undefined : 'required';
 }
 
 export default function Login() {
   const { isAuth } = useSelector((state) => state.user);
-  const [serverError, setServerError] = useState("");
-
+  const [serverError, setServerError] = useState('');
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const layout = {
     labelCol: {
@@ -39,16 +41,17 @@ export default function Login() {
     },
   };
   const initialValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().min(3).max(50).required("Required"),
-    password: Yup.string().min(5).max(255).required("Required"),
+    email: Yup.string().min(3).max(50).required('Required'),
+    password: Yup.string().min(5).max(255).required('Required'),
   });
 
   const onSubmit = (values) => {
+
     dispatch(attemptCustomerLogin(values)).catch((error) => {
       if (error.response) {
         setServerError(error.response.data.message);
@@ -63,13 +66,12 @@ export default function Login() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-
         validate={(values) => {
           if (!values.email) {
-            return { email: "Required" };
+            return { email: 'Required' };
           }
           if (!values.password) {
-            return { password: "Required" };
+            return { password: 'Required' };
           }
           return {};
         }}
@@ -78,22 +80,16 @@ export default function Login() {
             type="flex"
             justify="center"
             align="middle"
-            style={{ minHeight: "75vh" }}
+            style={{ minHeight: '75vh' }}
           >
-            <Card title="Login" bordered={false} style={{ width: "auto" }}>
+            <Card title="Login" bordered={false} style={{ width: 'auto' }}>
               <Form
                 {...layout}
-              // style={{
-              //   display: "flex",
-              //   gridTemplateColumns: "1fr 1fr 1fr",
-              // }}
-              // labelCol={{ xs: 10 }}
-              // // wrapperCol={{ xs: 20 }}
               >
                 <FormItem
                   name="email"
                   label="Email"
-                  required={true}
+                  required
                   validate={validateRequired}
                 >
                   <Input name="email" placeholder="Email" />
@@ -101,7 +97,7 @@ export default function Login() {
                 <FormItem
                   name="password"
                   label="Password"
-                  required={true}
+                  required
                   validate={validateRequired}
                 >
                   <Input.Password name="password" placeholder="Password" />

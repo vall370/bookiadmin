@@ -10,6 +10,8 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const port = process.env.PORT || 3900;
 const app = express();
+const morgan = require('morgan');
+const httplogger = require("./startup/logger/httplogger");
 
 require("./startup/passport/passport-setup")();
 require("./startup/logging")();
@@ -24,6 +26,7 @@ var options = {
   database: 'booki'
 };
 var sessionStore = new MySQLStore(options);
+app.use(httplogger);
 
 // Create session
 app.use(
@@ -45,5 +48,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/index")(app);
+app.use(morgan(":method :url :status :response-time ms - :res[content-length]"));
 
 app.listen(port, () => winston.info(`Listening on port ${port}...`));

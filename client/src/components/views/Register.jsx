@@ -1,16 +1,9 @@
-import React, { Fragment, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
-import * as Yup from "yup";
+import React, { Fragment, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as Yup from 'yup';
 // import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Error } from "./../shared";
-import {
-  attemptRegister,
-  attemptResendConfirmation,
-  attemptResetRegister,
-  attemptRegisterCustomer
-} from "../../store/thunks/auth";
-import { Formik } from "formik";
+import { Formik } from 'formik';
 import {
   SubmitButton,
   Input,
@@ -18,18 +11,27 @@ import {
   FormikDebug,
   Form,
   FormItem,
-} from "formik-antd";
-import { message, Button, Row, Col, Card } from "antd";
+} from 'formik-antd';
+import {
+  message, Button, Row, Col, Card,
+} from 'antd';
 import { FormattedMessage, FormattedDate, useIntl } from 'react-intl';
+import {
+  attemptRegister,
+  attemptResendConfirmation,
+  attemptResetRegister,
+  attemptRegisterCustomer,
+} from '../../store/thunks/auth';
+import { Error } from '../shared';
 
 function validateRequired(value) {
-  return value ? undefined : "Required";
+  return value ? undefined : 'Required';
 }
 export default function Register() {
   const { isAuth } = useSelector((state) => state.user);
-  const [serverError, setServerError] = useState("");
-  const [email, setEmail] = useState("");
-  const [registerStep, setRegisterStep] = useState("register"); // Use an enum with TS;
+  const [serverError, setServerError] = useState('');
+  const [email, setEmail] = useState('');
+  const [registerStep, setRegisterStep] = useState('register'); // Use an enum with TS;
 
   const dispatch = useDispatch();
   const layout = {
@@ -47,19 +49,20 @@ export default function Register() {
     },
   };
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-    company: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+    company: '',
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().min(5).max(255).email().required("Required"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    company: Yup.string().required("Required"),
+    email: Yup.string().min(5).max(255).email()
+      .required('Required'),
+    firstName: Yup.string().required('Required'),
+    lastName: Yup.string().required('Required'),
+    company: Yup.string().required('Required'),
     password: Yup
       .string()
       .min(8)
@@ -77,7 +80,7 @@ export default function Register() {
     dispatch(attemptRegisterCustomer(values))
       .then(() => {
         setEmail(values.email);
-        setRegisterStep("resend");
+        setRegisterStep('resend');
       })
       .catch((error) => {
         if (error.response) {
@@ -88,7 +91,7 @@ export default function Register() {
 
   const onResendEmail = () => {
     dispatch(attemptResendConfirmation(email))
-      .then(() => setRegisterStep("reset"))
+      .then(() => setRegisterStep('reset'))
       .catch((error) => {
         if (error.response) {
           setServerError(error.response.data.message);
@@ -106,7 +109,7 @@ export default function Register() {
 
   function renderSwitch() {
     switch (registerStep) {
-      case "register":
+      case 'register':
         return (
           <Formik
             initialValues={initialValues}
@@ -114,22 +117,22 @@ export default function Register() {
             onSubmit={onSubmit}
             validate={(values) => {
               if (!values.firstName) {
-                return { firstName: "Required" };
+                return { firstName: 'Required' };
               }
               if (!values.lastName) {
-                return { lastName: "Required" };
+                return { lastName: 'Required' };
               }
               if (!values.email) {
-                return { email: "Required" };
+                return { email: 'Required' };
               }
               if (!values.company) {
-                return { company: "Required" };
+                return { company: 'Required' };
               }
               if (!values.password) {
-                return { password: "Required" };
+                return { password: 'Required' };
               }
               if (!values.confirm_password) {
-                return { confirm_password: "Required" };
+                return { confirm_password: 'Required' };
               }
               return {};
             }}
@@ -138,12 +141,12 @@ export default function Register() {
                 type="flex"
                 justify="center"
                 align="middle"
-                style={{ minHeight: "75vh" }}
+                style={{ minHeight: '75vh' }}
               >
                 <Card
                   title="Registration"
                   bordered={false}
-                  style={{ width: "50vh" }}
+                  style={{ width: '50vh' }}
                 >
                   <Form
                     {...layout}
@@ -152,7 +155,7 @@ export default function Register() {
 
                       name="company"
                       label={<FormattedMessage id="company" />}
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input name="company" placeholder="Company" />
@@ -161,7 +164,7 @@ export default function Register() {
 
                       name="firstName"
                       label={<FormattedMessage id="firstName" />}
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input name="firstName" placeholder="Firstname" />
@@ -169,7 +172,7 @@ export default function Register() {
                     <FormItem
                       name="lastName"
                       label={<FormattedMessage id="lastName" />}
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input name="lastName" placeholder="Lastname" />
@@ -177,7 +180,7 @@ export default function Register() {
                     <FormItem
                       name="email"
                       label="Email"
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input name="email" placeholder="Email" />
@@ -185,7 +188,7 @@ export default function Register() {
                     <FormItem
                       name="password"
                       label="Password"
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input.Password name="password" placeholder="Password" />
@@ -194,7 +197,7 @@ export default function Register() {
                     <FormItem
                       name="confirm_password"
                       label="Repeat Password"
-                      required={true}
+                      required
                       validate={validateRequired}
                     >
                       <Input.Password name="confirm_password" placeholder="Repeat Password" />
@@ -214,11 +217,15 @@ export default function Register() {
             )}
           />
         );
-      case "resend":
+      case 'resend':
         return (
           <div className="container">
             <p>A verification email has been sent.</p>
-            <p>Check you'r mailbox : {email}.</p>
+            <p>
+              Check you'r mailbox :
+              {email}
+              .
+            </p>
             <p>
               You have 12 hours to activate your account. It can take up to 15
               min to receive our email.
@@ -230,7 +237,7 @@ export default function Register() {
           </div>
         );
 
-      case "reset":
+      case 'reset':
         return (
           <div className="container">
             <p>Still not received an email? </p>
@@ -253,6 +260,6 @@ export default function Register() {
   return isAuth ? (
     <Redirect to="/home" />
   ) : (
-      <Fragment>{renderSwitch()}</Fragment>
-    );
+    <>{renderSwitch()}</>
+  );
 }
