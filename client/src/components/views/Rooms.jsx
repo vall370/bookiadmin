@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import washing_machine from '../../images/washing-machine.png';
+import dryer from '../../images/dryer.png';
+import sauna from '../../images/sauna1.png';
 
 import {
   Input,
@@ -9,6 +12,9 @@ import {
   ResetButton,
   SubmitButton,
   Form,
+  Select,
+  TimePicker,
+   
 } from 'formik-antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Formik } from 'formik';
@@ -19,12 +25,16 @@ import {
   message,
   Row,
   Col,
+  Tabs,
+  Divider
 } from 'antd';
 import '../../index.css';
 import 'antd/dist/antd.css';
 import { HeartFilled } from '@ant-design/icons';
 const { TreeNode } = $TreeSelect;
 const { Title } = Typography;
+const { TabPane } = Tabs;
+
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 function validateRequired(value) {
   return value ? undefined : 'required';
@@ -47,6 +57,10 @@ function handleMenuClick(e) {
   message.info('Click on menu item.');
   console.log('click', e);
 }
+function callback(key) {
+  console.log(key);
+}
+
 const layout = {
   labelCol: {
     span: 8,
@@ -62,9 +76,6 @@ const tailLayout = {
   },
 };
 const initialValues = {
-  email: '',
-  password: '',
-  city: 3,
   type_of_room: 'washing_machine',
 };
 
@@ -80,6 +91,16 @@ export default function Rooms() {
     setValue1(e.target.value);
   };
   return (
+    <>
+    <div>
+      <Title>Era rum</Title>
+    </div>
+    <Divider />
+    <div>
+      <Title>Lägg till rum eller maskiner</Title>
+    </div>
+    <Tabs defaultActiveKey="1" onChange={callback} centered>
+    <TabPane tab="Tab 1" key="1">
     <Formik
       initialValues={initialValues}
       // onSubmit={handleSubmit}
@@ -106,34 +127,36 @@ export default function Rooms() {
                   <Radio.Button value={'sauna'}>Sauna</Radio.Button>
                 </Radio.Group>
               </FormItem>
+              <div className="same-row">
+              <Select
+                name="type_of_room"
+                style={{ width: "25vh" }}
+                placeholder="Välj typ av maskin"
+                mode="single"
+                size="large"
+              >
+                 <Select.Option value={'washing_machine'}>
+                   <img src={washing_machine} width="24px" /> <span style={{marginLeft: '24px'}}>Washing machine</span> 
+                  </Select.Option>
+                  <Select.Option value={'sauna'}> 
+                  <img src={sauna} width="24px" /> <span style={{marginLeft: '24px'}}>Sauna</span></Select.Option>
+                  <Select.Option value={'dryer'}> 
+                  <img src={dryer} width="24px" /> <span style={{marginLeft: '24px'}}>Dryer</span></Select.Option>
+              </Select>
+              <Input name="name_for_machine" placeholder="Name For Machine" />
+
+              </div>
+              <div className="timepicker">
               <FormItem
-                name="email"
-                label="Email"
+                name="open_hours"
+                label="Open hours"
                 required
                 validate={validateRequired}
               >
-                <Input name="email" placeholder="Email" />
+              <TimePicker size="large" name="from_time" placeholder="From" />
+              <TimePicker size="large" name="to_time" placeholder="To" />
               </FormItem>
-              <FormItem
-                name="password"
-                label="Password"
-                required
-                validate={validateRequired}
-              >
-                <Input.Password name="password" placeholder="Password" />
-              </FormItem>
-              <FormItem
-                name="city"
-                label="city"
-                required
-                validate={validateRequired}
-              >
-                <Radio.Group name="city" size="large">
-                  <Radio.Button value={1}>Hamburg</Radio.Button>
-                  <Radio.Button value={2}>Amsterdam</Radio.Button>
-                  <Radio.Button value={3}>London</Radio.Button>
-                </Radio.Group>
-              </FormItem>
+              </div>
               <Row style={{ marginTop: 60 }}>
                 <Col offset={8}>
                   <Button.Group>
@@ -144,10 +167,18 @@ export default function Rooms() {
               </Row>
             </div>
 
-            <FormikDebug style={{ marginLeft: '25vh', float: 'right' }} />
           </div>
         </Form>
       )}
     />
+    </TabPane>
+    <TabPane tab="Tab 2" key="2">
+      Content of Tab Pane 2
+    </TabPane>
+    <TabPane tab="Tab 3" key="3">
+      Content of Tab Pane 3
+    </TabPane>
+  </Tabs>
+  </>
   );
 }

@@ -106,6 +106,7 @@ export default function App() {
           <Layout style={{ height: "100vh" }}>
             <Sider width={200} className="site-layout-background">
               <Menu
+              m
                 mode="inline"
                 defaultSelectedKeys={["1"]}
                 defaultSelectedKeys={[location.pathname]}

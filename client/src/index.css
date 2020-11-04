@@ -21,6 +21,10 @@ body {
 .site-layout-background {
   background: #fff;
 }
+.same-row{
+  display: flex;
+  flex-direction: row;
+}
 .nav {
   display: flex;
   flex-direction: row;
@@ -85,7 +89,9 @@ body {
   flex-direction: column;
   width: 160px;
 }
-
+.your-table table {
+  width: 75vh;
+}
 .error {
   color: red;
   font-size: 10px;
@@ -117,7 +123,9 @@ body {
 span {
   align-self: center;
 }
-
+.time-picker {
+  width: auto;
+}
 .container {
   display: flex;
   margin-left: auto;

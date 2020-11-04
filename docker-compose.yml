@@ -27,7 +27,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:5555
+      - REACT_APP_API_URL=http://localhost:5556
       - CHOKIDAR_USEPOLLING=true # Hot reloading create react app : https://mherman.org/blog/dockerizing-a-react-app/ ; https://create-react-app.dev/docs/troubleshooting/#npm-start-doesn-t-detect-changes
     restart: always
     stdin_open: true # Hot reloading create react app: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602110747
@@ -42,13 +42,13 @@ services:
     environment:
       - NODE_ENV=development
       - MONGO_URI=mongodb://mongo:27017/DEV
-      - PORT=5555
+      - PORT=5556
       - HOST=localhost:3000
       - MAILGUN_API_KEY=9a734a879a5b0afbdadde187b7b4c012-8b34de1b-fdb35f27
       - SENDING_EMAIL=info.parkoq.nu
       - SESSION_KEY=57/GB537kQTk1HUE3Nlg0Vl74O1nusTl
     ports:
-      - "5555:5555"
+      - "5556:5556"
     restart: always
     volumes: 
       - ./server:/app #Synchronise docker container with local change

@@ -130,29 +130,33 @@ router.post("/getUser", (req, res) => {
 });
 router.get("/getAllUsersFromCompany", (req, res) => {
     connection.query(
-        "SELECT id, apartment, building, created_date FROM apartmentmaster WHERE company = ?",
+        "SELECT * FROM apartmentmaster WHERE company = ?",
         [req.params.company],
         function (error, results, fields) {
             if (error) throw error;
+            console.log(results)
             res.json(results);
         }
     );
 });
 router.get("/getApartmentCompany/:company", (req, res) => {
     connection.query(
-        "SELECT id, apartment, building, created_date FROM apartmentmaster WHERE company = ?",
+        "SELECT * FROM apartmentmaster WHERE company = ?",
         [req.params.company],
         function (error, results, fields) {
             if (error) throw error;
             let test = results
             let testarray = []
             const result = test.map(x => {
-                console.log(x)
                 return {
                     id: x.id,
                     apartment: x.apartment,
                     building: x.building,
-                    created_date: x.created_date
+                    created_date: x.created_date,
+                    last_login_date: x.last_login_date,
+                    status: x.status,
+                    email: x.email,
+
                 };
             });
             console.log(result)
