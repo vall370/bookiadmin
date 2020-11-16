@@ -3,6 +3,8 @@ import { setUser, resetUser } from '../actions/user';
 
 export const attemptGetUser = () => async (dispatch) => await getUser()
   .then((res) => {
+    console.log(res.data.user.company)
+    sessionStorage.setItem('company', res.data.user.company)
     if (res.data.user) { dispatch(setUser(res.data.user)); } else { dispatch(resetUser()); }
   })
   .catch(() => dispatch(resetUser()));

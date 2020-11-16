@@ -22,12 +22,12 @@ require("./startup/prod")(app);
 var options = {
   host: 'db',
   user: 'root',
-  password: 'password',
+  password: 'root',
   database: 'booki'
 };
 var sessionStore = new MySQLStore(options);
-app.use(httplogger);
-
+/* app.use(httplogger);
+ */
 // Create session
 app.use(
   session({

@@ -15,7 +15,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-      - REACT_APP_API_URL=http://localhost:5556
+      - REACT_APP_API_URL=http://localhost:5555
     restart: always
   server-prod:
     build:
@@ -26,11 +26,11 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_URI=mongodb://mongo-prod:27017/PROD
-      - PORT=5556
+      - PORT=5555
       - HOST=localhost:3002
       - MAILGUN_API_KEY=9a734a879a5b0afbdadde187b7b4c012-8b34de1b-fdb35f27
       - SENDING_EMAIL=info.parkoq.nu
       - SESSION_KEY=57/GB537kQTk1HUE3Nlg0Vl74O1nusTl
     ports:
-      - "5556:5556"
+      - "5555:5555"
     restart: always

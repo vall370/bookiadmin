@@ -9,6 +9,6 @@ RUN npm install --silent
 # Get all the code needed to run the app
 COPY . .
 # Expose the port the app runs in
-EXPOSE 5556
+EXPOSE 5555
 # Serve the app
 CMD ["npm", "run", "dev"]

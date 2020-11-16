@@ -2,51 +2,51 @@
     {
         "id": "1",
         "company": "Diös Fastigheter",
-        "image": "http://192.168.0.10:5556/uploads/foretag/dios.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/dios.png"
     },
     {
         "id": "2",
         "company": "SBF Fonder",
-        "image": "http://192.168.0.10:5556/uploads/foretag/sbf.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/sbf.png"
     },
     {
         "id": "3",
         "company": "Heimstaden",
-        "image": "http://192.168.0.10:5556/uploads/foretag/heimstaden.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/heimstaden.png"
     },
     {
         "id": "4",
         "company": "Lulebo",
-        "image": "http://192.168.0.10:5556/uploads/foretag/lulebo.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/lulebo.png"
     },
     {
         "id": "5",
         "company": "HSB",
-        "image": "http://192.168.0.10:5556/uploads/foretag/hsb.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/hsb.png"
     },
     {
         "id": "6",
         "company": "KFAB",
-        "image": "http://192.168.0.10:5556/uploads/foretag/kfab.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/kfab.png"
     },
     {
         "id": "7",
         "company": "Hembla",
-        "image": "http://192.168.0.10:5556/uploads/foretag/hembla.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/hembla.png"
     },
     {
         "id": "8",
         "company": "Victoria Park",
-        "image": "http://192.168.0.10:5556/uploads/foretag/victoria_park.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/victoria_park.png"
     },
     {
         "id": "9",
         "company": "Flens Kommuns Bibliotek",
-        "image": "http://192.168.0.10:5556/uploads/foretag/flensbibliotek.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/flensbibliotek.png"
     },
     {
         "id": "10",
         "company": "Katrineholms Bibliotek",
-        "image": "http://192.168.0.10:5556/uploads/foretag/katrineholm.png"
+        "image": "http://192.168.0.10:5555/uploads/foretag/katrineholm.png"
     }
 ]

@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "private": false,
   "dependencies": {
+    "@ant-design/colors": "^4.0.5",
     "antd": "^4.7.0",
     "axios": "^0.20.0",
     "connected-react-router": "^6.8.0",
     "dayjs": "^1.9.3",
+    "faker": "^5.1.0",
     "formik": "^2.1.4",
     "formik-antd": "^2.0.1",
     "history": "^4.10.1",

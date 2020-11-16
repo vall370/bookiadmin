@@ -12,9 +12,7 @@ import {
   Form,
   FormItem,
 } from 'formik-antd';
-import {
-  message, Button, Row, Col, Card,
-} from 'antd';
+import { message, Button, Row, Col, Card } from 'antd';
 import { FormattedMessage, FormattedDate, useIntl } from 'react-intl';
 import {
   attemptRegister,
@@ -49,8 +47,8 @@ export default function Register() {
     },
   };
   const initialValues = {
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     confirm_password: '',
@@ -58,25 +56,20 @@ export default function Register() {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().min(5).max(255).email()
-      .required('Required'),
-    firstName: Yup.string().required('Required'),
-    lastName: Yup.string().required('Required'),
+    email: Yup.string().min(5).max(255).email().required('Required'),
+    firstname: Yup.string().required('Required'),
+    lastname: Yup.string().required('Required'),
     company: Yup.string().required('Required'),
-    password: Yup
-      .string()
-      .min(8)
-      .required(),
-    confirm_password: Yup
-      .string()
+    password: Yup.string().min(8).required(),
+    confirm_password: Yup.string()
       .required()
-      .oneOf(
-        [Yup.ref('password'), null],
-        'Passwords must match',
-      ),
+      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
   const onSubmit = (values) => {
+    delete values.confirm_password;
+    console.log(values);
+    
     dispatch(attemptRegisterCustomer(values))
       .then(() => {
         setEmail(values.email);
@@ -116,11 +109,11 @@ export default function Register() {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
             validate={(values) => {
-              if (!values.firstName) {
-                return { firstName: 'Required' };
+              if (!values.firstname) {
+                return { firstname: 'Required' };
               }
-              if (!values.lastName) {
-                return { lastName: 'Required' };
+              if (!values.lastname) {
+                return { lastname: 'Required' };
               }
               if (!values.email) {
                 return { email: 'Required' };
@@ -148,11 +141,8 @@ export default function Register() {
                   bordered={false}
                   style={{ width: '50vh' }}
                 >
-                  <Form
-                    {...layout}
-                  >
+                  <Form {...layout}>
                     <FormItem
-
                       name="company"
                       label={<FormattedMessage id="company" />}
                       required
@@ -161,21 +151,20 @@ export default function Register() {
                       <Input name="company" placeholder="Company" />
                     </FormItem>
                     <FormItem
-
-                      name="firstName"
-                      label={<FormattedMessage id="firstName" />}
+                      name="firstname"
+                      label={<FormattedMessage id="firstname" />}
                       required
                       validate={validateRequired}
                     >
-                      <Input name="firstName" placeholder="Firstname" />
+                      <Input name="firstname" placeholder="Firstname" />
                     </FormItem>
                     <FormItem
-                      name="lastName"
-                      label={<FormattedMessage id="lastName" />}
+                      name="lastname"
+                      label={<FormattedMessage id="lastname" />}
                       required
                       validate={validateRequired}
                     >
-                      <Input name="lastName" placeholder="Lastname" />
+                      <Input name="lastname" placeholder="Lastname" />
                     </FormItem>
                     <FormItem
                       name="email"
@@ -200,7 +189,10 @@ export default function Register() {
                       required
                       validate={validateRequired}
                     >
-                      <Input.Password name="confirm_password" placeholder="Repeat Password" />
+                      <Input.Password
+                        name="confirm_password"
+                        placeholder="Repeat Password"
+                      />
                     </FormItem>
 
                     <Row style={{ marginTop: 60 }}>
@@ -221,11 +213,7 @@ export default function Register() {
         return (
           <div className="container">
             <p>A verification email has been sent.</p>
-            <p>
-              Check you'r mailbox :
-              {email}
-              .
-            </p>
+            <p>Check you'r mailbox :{email}.</p>
             <p>
               You have 12 hours to activate your account. It can take up to 15
               min to receive our email.
@@ -257,9 +245,5 @@ export default function Register() {
     }
   }
 
-  return isAuth ? (
-    <Redirect to="/home" />
-  ) : (
-    <>{renderSwitch()}</>
-  );
+  return isAuth ? <Redirect to="/home" /> : <>{renderSwitch()}</>;
 }

@@ -5,7 +5,8 @@ const sendResetPasswordLink = (email) => http.post('/auth/login/forgot', { email
 const resetPassword = (password, token) => http.post(`/auth/login/reset/${token}`, { password });
 const postLogout = () => http.post('/auth/logout');
 const postRegister = (user) => http.post('/auth/register', user);
-const postCustomerRegister = (user) => http.post('/adminfeatures/createCustomerUser', user);
+const postCustomerRegister = (user) => http.post('/adminfeatures/createcompanyuser', user);
+const postCustomerRegisterUser = (user) => http.post('/adminfeatures/createUser', user);
 const postCustomerLogin = (user) => http.post('/adminfeatures/login', user);
 const getCustomerConfirmation = (token) => http.get(`/adminfeatures/confirmation/${token}`);
 const getConfirmation = (token) => http.get(`/auth/confirmation/${token}`);
@@ -28,4 +29,5 @@ export {
   getCustomerConfirmation,
   postCustomerLogin,
   getCustomerUser,
+  postCustomerRegisterUser
 };
