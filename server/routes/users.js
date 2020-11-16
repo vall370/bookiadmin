@@ -36,7 +36,7 @@ router.post("/createUser", (req, res, next) => {
 // });
 router.post('/userlogin', (req, res) => {
     const { building, apartment, password } = req.body;
-
+    console.log('something')
     connection.query('SELECT password, apartment, building FROM apartmentmaster WHERE apartment = ? AND building = ?', [apartment, building], function (error, results, fields) {
         if (error) throw error;
         let hashedpassword = results[0].password
