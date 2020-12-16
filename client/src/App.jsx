@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Redirect, Switch, Link, useLocation } from "react-router-dom";
-import { attemptGetUser } from "./store/thunks/user";
-import { Context } from "./components/Wrapper";
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import { Layout, Menu, Breadcrumb, Divider } from "antd";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Redirect, Switch, Link, useLocation } from 'react-router-dom';
+import { attemptGetUser } from './store/thunks/user';
+import { Context } from './components/Wrapper';
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Layout, Menu, Breadcrumb, Divider } from 'antd';
 
 import {
   ConfirmPage,
   Home,
   Profile,
-  NavBar,
   Login,
   LoginForgot,
   LoginResetPassword,
@@ -21,18 +20,14 @@ import {
   Rooms,
   Users,
   Settings,
-} from "./components/views";
+} from './components/views';
 import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  MailOutlined,
   AppstoreOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import ProtectedRoute from "./components/shared/protectedRoute.jsx";
-
-import { FormattedMessage, FormattedDate } from "react-intl";
+} from '@ant-design/icons';
+import ProtectedRoute from './components/shared/protectedRoute.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 const breadcrumbNameMap = {
@@ -47,13 +42,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { isAuth, user } = useSelector((state) => state.user);
-  const [current, setCurrent] = React.useState("home");
   const location = useLocation();
-  const handleClick = (e) => {
-    console.log("click", e);
-    setCurrent(e);
-  };
-  const pathSnippets = location.pathname.split('/').filter(i => i);
+
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
     return (
@@ -67,7 +58,6 @@ export default function App() {
       <Link to="/">Home</Link>
     </Breadcrumb.Item>,
   ].concat(extraBreadcrumbItems);
-
 
   useEffect(() => {
     dispatch(attemptGetUser())
@@ -85,65 +75,57 @@ export default function App() {
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={[location.pathname]}
-              style={{ float: "right", }}
+              style={{ float: 'right' }}
             >
               <Menu.Item key="/my-profile" icon={<UserOutlined />}>
                 My Profile
-                  <Link to="/my-profile" />
+                <Link to="/my-profile" />
               </Menu.Item>
               <Menu.Item key="/home" icon={<UserOutlined />}>
                 Home
-                  <Link to="/home" />
+                <Link to="/home" />
               </Menu.Item>
               <Menu.Item key="/logout" icon={<VideoCameraOutlined />}>
                 Logout
-                  <Link to="/logout" />
+                <Link to="/logout" />
               </Menu.Item>
             </Menu>
-
           </Header>
 
-          <Layout style={{ height: "100vh" }}>
+          <Layout style={{ height: '100vh' }}>
             <Sider width={200} className="site-layout-background">
               <Menu
-              m
                 mode="inline"
-                defaultSelectedKeys={["1"]}
+                defaultSelectedKeys={['1']}
                 defaultSelectedKeys={[location.pathname]}
-                style={{ height: "100%", borderRight: 0 }}
+                style={{ height: '100%', borderRight: 0 }}
               >
                 <Menu.Item key="/bookings" icon={<UserOutlined />}>
                   Bokningar
                   <Link to="/bookings" />
-
                 </Menu.Item>
                 <Menu.Item key="/rooms" icon={<VideoCameraOutlined />}>
                   Rum
                   <Link to="/rooms" />
-
                 </Menu.Item>
                 <Menu.Item key="/users" icon={<UploadOutlined />}>
                   Användare
                   <Link to="/users" />
-
                 </Menu.Item>
                 <Divider />
                 <Menu.Item key="/settings" icon={<UploadOutlined />}>
                   Inställningar
                   <Link to="/settings" />
-
                 </Menu.Item>
               </Menu>
             </Sider>
-            <Layout style={{ padding: "0 24px 24px" }}>
-              <Breadcrumb style={{ margin: "16px 0" }}>
+            <Layout style={{ padding: '0 24px 24px' }}>
+              <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
                 <Breadcrumb.Item>App</Breadcrumb.Item>
               </Breadcrumb>
-              <Content
-                className="site-layout-background"
-              >
+              <Content className="site-layout-background">
                 <div>
                   <Switch>
                     <Route path="/home" exact component={Home} />
@@ -152,18 +134,26 @@ export default function App() {
                       exact
                       component={Profile}
                     />
-                    <ProtectedRoute path="/bookings" exact component={Bookings} />
+                    <ProtectedRoute
+                      path="/bookings"
+                      exact
+                      component={Bookings}
+                    />
                     <ProtectedRoute path="/rooms" exact component={Rooms} />
                     <ProtectedRoute path="/users" exact component={Users} />
-                    <ProtectedRoute path="/settings" exact component={Settings} />
-                    <ProtectedRoute path='/logout' exact component={Logout} />
+                    <ProtectedRoute
+                      path="/settings"
+                      exact
+                      component={Settings}
+                    />
+                    <ProtectedRoute path="/logout" exact component={Logout} />
 
                     <Redirect from="/" exact to="/home" />
                     <Redirect to="/home" />
                   </Switch>
                 </div>
               </Content>
-              <Footer style={{ textAlign: "center" }}>
+              <Footer style={{ textAlign: 'center' }}>
                 Ant Design ©2018 Created by Ant UED
               </Footer>
             </Layout>
@@ -172,7 +162,7 @@ export default function App() {
       );
     } else {
       return (
-        <Layout style={{ height: "100vh" }}>
+        <Layout style={{ height: '100vh' }}>
           <Header className="header">
             <div className="logo" />
 
@@ -192,7 +182,7 @@ export default function App() {
             </Menu>
           </Header>
 
-          <Layout >
+          <Layout>
             <Layout>
               <Content
                 style={{

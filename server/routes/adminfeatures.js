@@ -62,7 +62,7 @@ router.post("/createUser", (req, res, next) => {
   var salt = bcrypt.genSaltSync(10);
   var hashedpassword = bcrypt.hashSync(password, salt);
   var last_login_date = moment().format();
-  var created_date = moment().format();
+  var update_time = moment().format();
   try {
     connection.query(
       "SELECT * FROM apartmentmaster WHERE company = ? AND apartment = ? AND building = ?",
@@ -76,14 +76,12 @@ router.post("/createUser", (req, res, next) => {
           });
         } else {
           connection.query(
-            "INSERT INTO apartmentmaster (building, apartment, password, last_login_date, created_date, company) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO apartmentmaster (building, apartment, password, company ) VALUES (?, ?, ?, ?)",
             [
               building,
               apartment,
               hashedpassword,
-              last_login_date,
-              created_date,
-              company,
+              company
             ],
             function (error, results, fields) {
               if (error) throw error;
@@ -175,28 +173,32 @@ router.get("/getAllUsersFromCompany/:company", (req, res) => {
   );
 });
 router.get("/getApartmentCompany/:company", (req, res) => {
-  connection.query(
-    "SELECT * FROM apartmentmaster WHERE company = ?",
-    [req.params.company],
-    function (error, results, fields) {
-      if (error) throw error;
-      let test = results;
-      let testarray = [];
-      const result = test.map((x) => {
-        return {
-          id: x.id,
-          apartment: x.apartment,
-          building: x.building,
-          created_date: x.created_date,
-          last_login_date: x.last_login_date,
-          status: x.status,
-          email: x.email,
-          rfid_key: x.rfid_key,
-        };
-      });
-      res.status(200).send({ result: result });
-    }
-  );
+  try {
+    connection.query(
+      "SELECT * FROM apartmentmaster WHERE company = ?",
+      [req.params.company],
+      function (error, results, fields) {
+        if (error) throw error;
+        let test = results;
+        const result = test.map((x) => {
+          return {
+            id: x.id,
+            apartment: x.apartment,
+            building: x.building,
+            created_date: x.created_date,
+            last_login_date: x.last_login_date,
+            status: x.status,
+            email: x.email,
+            rfid_key: x.rfid_key,
+          };
+        });
+        res.status(200).send({ result: result });
+      }
+    );
+  } catch (error) {
+    res.status(501).send({ 'error': true })
+  }
+
 });
 router.post("/createBuilding", (req, res, next) => {
   const { building, company } = req.body;
@@ -243,9 +245,7 @@ router.post("/createcompanyuser", (req, res, next) => {
     [company],
     function (error, results, fields) {
       if (error) console.log(error);
-      console.log(results);
       let nbrOfRows = results.length;
-      console.log(nbrOfRows);
       if (nbrOfRows === 0) {
         connection.query(
           "INSERT INTO booki.companyuser ( company, firstname, lastname, email, password ) VALUES (?, ?, ?, ?, ?)",

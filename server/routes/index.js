@@ -5,6 +5,7 @@ const auth = require("./auth");
 const foretag = require("./foretag");
 const express = require("express");
 const adminfeatures = require("./adminfeatures");
+const bookings = require("./bookings");
 
 const error = require("../middleware/error");
 
@@ -14,6 +15,7 @@ module.exports = function (app) {
   app.use("/api/foretag", foretag);
   app.use("/api/adminfeatures", adminfeatures);
   app.use("/api/users", users);
+  app.use("/api/bookings", bookings);
 
   app.use("/uploads", express.static("uploads"));
 

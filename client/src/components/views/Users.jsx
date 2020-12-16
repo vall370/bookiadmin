@@ -13,14 +13,6 @@ import {
   Input,
   Tag,
 } from 'antd';
-import {
-  CheckCircleOutlined,
-  SyncOutlined,
-  CloseCircleOutlined,
-  ExclamationCircleOutlined,
-  ClockCircleOutlined,
-  MinusCircleOutlined,
-} from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,15 +24,6 @@ import { Formik } from 'formik';
 import { attemptRegisterCustomerUser } from '../../store/thunks/auth';
 import 'antd/dist/antd.css';
 
-import {
-  SubmitButton,
-  Input as Input1,
-  Checkbox,
-  ResetButton,
-  FormikDebug,
-  Form as Form1,
-  FormItem,
-} from 'formik-antd';
 import UserTable from '../shared/UserTable';
 const formItemLayout = {
   labelCol: {
@@ -76,7 +59,7 @@ export default function Users() {
   const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
-  const [showUserCard, setShowUserCard] = useState(true);
+  const [showUserCard, setShowUserCard] = useState(false);
   const [building, setBuilding] = useState('');
   const [apartment, setApartment] = useState('');
   const [password, setPassword] = useState('');
@@ -212,9 +195,14 @@ export default function Users() {
   function UserGreeting(props) {
     return (
       <Row>
-         <Formik
+        {/*        <Formik
           initialValues={initialValues}
-          onSubmit={onSubmit}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              actions.setSubmitting(false);
+            }, 1000);
+          }}
           validate={(values) => {
             if (!values.apartment) {
               return { apartment: 'Required' };
@@ -229,45 +217,97 @@ export default function Users() {
           }}
           render={() => (
             <Form layout={'inline'}>
-              <FormItem
+              <Form.Item
                 name="apartment"
                 label="Apartment"
                 required={true}
                 validate={validateRequired}
               >
                 <Input name="apartment" placeholder="Apartment" />
-              </FormItem>
-              <FormItem
+              </Form.Item>
+              <Form.Item
                 name="building"
                 label="Building"
                 validate={validateRequired}
                 required={true}
               >
                 <Input name="building" placeholder="Building" />
-              </FormItem>
-              <FormItem
+              </Form.Item>
+              <Form.Item
                 name="password"
                 label="Password"
                 validate={validateRequired}
                 required={true}
               >
                 <Input name="password" placeholder="Password" />
-              </FormItem>
+              </Form.Item>
               <Row>
                 <Col span={8}>
                   <Button.Group>
                     <Button onClick={DisableUserForm} type="ghost">
                       Cancel
                     </Button>
+                    <Button onClick={onReset}>Reset</Button>
 
-                    <ResetButton>Reset</ResetButton>
-                    <SubmitButton loading={loading1}>Submit</SubmitButton>
+                    <Button type="primary" htmlType="submit" loading={loading1}>
+                      Submit
+                    </Button>
                   </Button.Group>
                 </Col>
               </Row>
             </Form>
           )}
-        />
+        /> */}
+        <div>
+          <h1>My Form</h1>
+          <Formik
+            initialValues={{}}
+            onSubmit={(values, actions) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                actions.setSubmitting(false);
+              }, 1000);
+            }}
+          >
+            {(props) => (
+              <Form layout="inline" onFinish={props.handleSubmit}>
+                <Form.Item
+                  name="apartment"
+                  label="Apartment"
+                  required={true}
+                  validate={validateRequired}
+                  value={props.values.apartment}
+                  onChange={props.handleChange}
+                >
+                  <Input name="apartment" placeholder="Apartment" />
+                </Form.Item>
+                <Form.Item
+                  name="building"
+                  label="Building"
+                  validate={validateRequired}
+                  required={true}
+                  value={props.values.building}
+                  onChange={props.handleChange}
+                >
+                  <Input name="building" placeholder="Building" />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  validate={validateRequired}
+                  required={true}
+                  value={props.values.password}
+                  onChange={props.handleChange}
+                >
+                  <Input name="password" placeholder="Password" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </div>
       </Row>
     );
   }
@@ -294,7 +334,9 @@ export default function Users() {
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
-
+  const onReset = () => {
+    form.resetFields();
+  };
   const clearFilters = () => {
     console.log('asd');
 
@@ -351,18 +393,7 @@ export default function Users() {
   ];
   const showAdduserScene = () => {
     setShowUserCard(true);
-    console.log(showUserCard);
   };
-  /*   const handleOk = () => {
-    setLoading1(true);
-    setTimeout(() => {
-      setLoading1(false);
-      setShowUserCard(false);
-    }, 3000);
-  };
-  const handleCancel = () => {
-    setLoading1(false);
-  }; */
 
   function IsAddingUser() {
     if (showUserCard) {
@@ -386,7 +417,7 @@ export default function Users() {
           <Button onClick={clearFilters}>Clear filters</Button>
           <Button onClick={clearAll}>Clear filters and sorters</Button>
           <Button onClick={showAdduserScene} type="primary">
-            Add User
+            Add Users
           </Button>
         </Space>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -7,15 +7,13 @@ import {
   SubmitButton,
   Input,
   ResetButton,
-  FormikDebug,
   Form,
   FormItem,
 } from 'formik-antd';
 import {
-  message, Button, Row, Col, Card,
+  Button, Row, Col, Card,
 } from 'antd';
-import { Error } from '../shared';
-import { attemptCustomerLogin, attemptLogin } from '../../store/thunks/auth';
+import { attemptCustomerLogin } from '../../store/thunks/auth';
 
 function validateRequired(value) {
   return value ? undefined : 'required';
@@ -23,20 +21,14 @@ function validateRequired(value) {
 
 export default function Login() {
   const { isAuth } = useSelector((state) => state.user);
-  const [serverError, setServerError] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [, setServerError] = useState('');
+  const [] = useState(false)
   const dispatch = useDispatch();
   const layout = {
     labelCol: {
       span: 8,
     },
     wrapperCol: {
-      span: 16,
-    },
-  };
-  const tailLayout = {
-    wrapperCol: {
-      offset: 8,
       span: 16,
     },
   };

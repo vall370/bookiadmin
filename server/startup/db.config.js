@@ -1,10 +1,9 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-  host: 'db',
-  user: 'root',
-  password: 'root',
+  host: 'host.docker.internal',
   database: 'booki',
+  user: 'root',
   multipleStatements: true,
   insecureAuth: true,
 });

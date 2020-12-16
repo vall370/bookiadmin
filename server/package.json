@@ -21,6 +21,7 @@
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-mysql-session": "^2.1.4",
@@ -34,12 +35,14 @@
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "nodemailer": "^6.4.14",
     "nodemailer-mailgun-transport": "^2.0.1",
     "passport": "^0.4.1",
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
     "ramda": "^0.27.1",
+    "socket.io": "^3.0.4",
     "winston": "^3.3.3"
   },
   "devDependencies": {

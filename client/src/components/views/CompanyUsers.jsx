@@ -60,7 +60,7 @@ export default function CompanyUsers() {
   const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
-  const [showUserCard, setShowUserCard] = useState(true);
+  const [showUserCard, setShowUserCard] = useState(false);
   const [building, setBuilding] = useState('');
   const [apartment, setApartment] = useState('');
   const [password, setPassword] = useState('');
@@ -72,11 +72,6 @@ export default function CompanyUsers() {
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('horizontal');
 
-  const onFormLayoutChange = ({ layout }) => {
-    setFormLayout(layout);
-  };
-
-  const dispatch = useDispatch();
   function onTableRowExpand(expanded, record) {
     var keys = [];
     if (expanded) {
@@ -370,7 +365,7 @@ export default function CompanyUsers() {
           <Button onClick={clearFilters}>Clear filters</Button>
           <Button onClick={clearAll}>Clear filters and sorters</Button>
           <Button onClick={showAdduserScene} type="primary">
-            Add User
+            Add Users
           </Button>
         </Space>
 

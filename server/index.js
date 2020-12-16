@@ -5,13 +5,17 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const bodyParser = require("body-parser");
-const express = require("express");
-const MySQLStore = require('express-mysql-session')(session);
+/* const express = require("express");
+ */const MySQLStore = require('express-mysql-session')(session);
+
 
 const port = process.env.PORT || 3900;
-const app = express();
+var app = require('express')();
 const morgan = require('morgan');
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 const httplogger = require("./startup/logger/httplogger");
+const connection = require("./startup/db.config");
 
 require("./startup/passport/passport-setup")();
 require("./startup/logging")();
@@ -20,9 +24,9 @@ require("./startup/cors")(app);
 require("./startup/db")();
 require("./startup/prod")(app);
 var options = {
-  host: 'db',
+  host: 'host.docker.internal',
+  port: 3306,
   user: 'root',
-  password: 'root',
   database: 'booki'
 };
 var sessionStore = new MySQLStore(options);
@@ -42,12 +46,32 @@ app.use(
 
 // Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/index")(app);
 app.use(morgan(":method :url :status :response-time ms - :res[content-length]"));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
-app.listen(port, () => winston.info(`Listening on port ${port}...`));
+io.on('connection', function (socket) {
+
+  console.log('a client connected');
+
+  connection.query('SELECT * FROM booking',function(err,rows){
+    if(err) throw err;
+    console.log('Data received from Db:\n');
+/*     console.log(rows);
+ */    socket.emit('showrows', rows);
+  });
+
+
+
+});
+
+http.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
